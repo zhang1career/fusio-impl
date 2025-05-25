@@ -143,6 +143,17 @@ class Log
         ]);
     }
 
+    public function cleanup(int $expireDays)
+    {
+        $logSql = 'DELETE FROM ' . Table\Generated\LogTable::NAME . ' WHERE `date`<:stop_date';
+        $logStopDate = date('Y-m-d H:i:s', strtotime('-' . $expireDays . ' days'));
+        $this->connection->executeQuery($logSql, ['stop_date' => $logStopDate]);
+
+        $errorLogSql = 'DELETE FROM ' . Table\Generated\LogErrorTable::NAME . ' WHERE `date`<:stop_date';
+        $errorLogStopDate = date('Y-m-d H:i:s', strtotime('-' . $expireDays . ' days'));
+        $this->connection->executeQuery($errorLogSql, ['stop_date' => $errorLogStopDate]);
+    }
+
     protected function getHeadersAsString(RequestInterface $request): string
     {
         $headers = $request->getHeaders();
