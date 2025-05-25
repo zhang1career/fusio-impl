@@ -149,7 +149,7 @@ class Log
         $logStopDate = date('Y-m-d H:i:s', strtotime('-' . $expireDays . ' days'));
         $this->connection->executeQuery($logSql, ['stop_date' => $logStopDate]);
 
-        $errorLogSql = 'DELETE FROM ' . Table\Generated\LogErrorTable::NAME . ' WHERE `date`<:stop_date';
+        $errorLogSql = 'DELETE FROM ' . Table\Generated\LogErrorTable::NAME . ' WHERE `insert_date`<:stop_date';
         $errorLogStopDate = date('Y-m-d H:i:s', strtotime('-' . $expireDays . ' days'));
         $this->connection->executeQuery($errorLogSql, ['stop_date' => $errorLogStopDate]);
     }
