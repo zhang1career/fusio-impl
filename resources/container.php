@@ -91,6 +91,7 @@ return static function (ContainerConfigurator $container) {
         ->public();
     $services->load('Fusio\\Impl\\Action\\Resolver\\', __DIR__ . '/../src/Action/Resolver');
     $services->load('Fusio\\Impl\\MessengerHandler\\', __DIR__ . '/../src/MessengerHandler');
+    $services->load('Fusio\\Impl\\Callable\\', __DIR__ . '/../src/Callable')->public();
 
     $services->set(Provider\ActionProvider::class);
     $services->set(Provider\ConnectionProvider::class);
