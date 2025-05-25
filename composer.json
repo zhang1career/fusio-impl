@@ -50,6 +50,12 @@
     "phpunit/phpunit": "^9.0",
     "vimeo/psalm": "^5.0"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/zhang1career/fusio-adapter-http"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Fusio\\Impl\\": "src/"
