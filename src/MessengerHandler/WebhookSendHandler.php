@@ -22,9 +22,11 @@ namespace Fusio\Impl\MessengerHandler;
 
 use Fusio\Impl\Messenger\SendHttpRequest;
 use Fusio\Impl\Messenger\TriggerEvent;
+use Fusio\Impl\Service\Event\HttpHeaderStamp;
 use Fusio\Impl\Table;
 use PSX\DateTime\LocalDateTime;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -50,7 +52,7 @@ class WebhookSendHandler
         $this->messageBus = $messageBus;
     }
 
-    public function __invoke(TriggerEvent $event): void
+    public function __invoke(TriggerEvent $event, Envelope $envelope): void
     {
         $existing = $this->eventTable->findOneByTenantAndName($event->getTenantId(), null, $event->getEventName());
         if (!$existing instanceof Table\Generated\EventRow) {
@@ -68,7 +70,13 @@ class WebhookSendHandler
 
             $responseId = $this->responseTable->getLastInsertId();
 
-            $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()));
+            // forward HttpHeaderStamp from the TriggerEvent envelope to the SendHttpRequest dispatch
+            $headerStamp = $envelope->last(HttpHeaderStamp::class);
+            if ($headerStamp instanceof HttpHeaderStamp) {
+                $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()), [ $headerStamp ]);
+            } else {
+                $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()));
+            }
         }
     }
 }
