@@ -20,6 +20,7 @@
 
 namespace Fusio\Impl\MessengerHandler;
 
+use Fusio\Engine\Request\HttpRequestContext;
 use Fusio\Impl\Messenger\SendHttpRequest;
 use Fusio\Impl\Messenger\TriggerEvent;
 use Fusio\Impl\Service\Event\HttpHeaderStamp;
@@ -73,7 +74,7 @@ class WebhookSendHandler
             // forward HttpHeaderStamp from the TriggerEvent envelope to the SendHttpRequest dispatch
             $headerStamp = $envelope->last(HttpHeaderStamp::class);
             if ($headerStamp instanceof HttpHeaderStamp) {
-                $newHeaderStamp = $headerStamp->withHeader('X-Event-Code', $event->getEventName());
+                $newHeaderStamp = $headerStamp->withHeader(HttpRequestContext::X_EVENT_CODE, $event->getEventName());
                 $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()), [ $newHeaderStamp ]);
             } else {
                 $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()));
