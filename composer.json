@@ -21,7 +21,7 @@
     "psx/cloudevents": "^1.0",
     "fusio/cli": "^4.0",
     "fusio/model": "^4.0",
-    "fusio/engine": "^6.0",
+    "fusio/engine": "^6.6.1",
     "fusio/adapter-amqp": "^6.0",
     "fusio/adapter-beanstalk": "^6.0",
     "fusio/adapter-cli": "^6.0",
@@ -50,6 +50,16 @@
     "phpunit/phpunit": "^9.0",
     "vimeo/psalm": "^5.0"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/zhang1career/fusio-adapter-http"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/zhang1career/fusio-engine.git"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Fusio\\Impl\\": "src/"

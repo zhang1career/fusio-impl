@@ -22,6 +22,7 @@ namespace Fusio\Impl\MessengerHandler;
 
 use Fusio\Impl\Base;
 use Fusio\Impl\Messenger\SendHttpRequest;
+use Fusio\Impl\Service\Event\HttpHeaderStamp;
 use Fusio\Impl\Table;
 use PSX\DateTime\LocalDateTime;
 use PSX\Http\Client\ClientInterface;
@@ -29,6 +30,7 @@ use PSX\Http\Request;
 use PSX\Json\Parser;
 use PSX\Uri\Url;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Envelope;
 
 /**
  * SendHttpRequestHandler
@@ -51,7 +53,7 @@ class SendHttpRequestHandler
         $this->httpClient = $httpClient;
     }
 
-    public function __invoke(SendHttpRequest $httpRequest): void
+    public function __invoke(SendHttpRequest $httpRequest, Envelope $envelope): void
     {
         $existing = $this->responseTable->find($httpRequest->getResponseId());
         if (!$existing instanceof Table\Generated\WebhookResponseRow) {
@@ -66,6 +68,12 @@ class SendHttpRequestHandler
             'Content-Type' => 'application/json',
             'User-Agent' => Base::getUserAgent(),
         ];
+
+        // merge headers from HttpHeaderStamp if present
+        $headerStamp = $envelope->last(HttpHeaderStamp::class);
+        if ($headerStamp instanceof HttpHeaderStamp) {
+            $headers = array_merge($headers, $headerStamp->getHeaders());
+        }
 
         $request  = new Request(Url::parse($httpRequest->getEndpoint()), 'POST', $headers, Parser::encode($httpRequest->getPayload()));
         $response = $this->httpClient->request($request);

@@ -23,6 +23,7 @@ namespace Fusio\Impl\Service\Event;
 use Fusio\Engine\DispatcherInterface;
 use Fusio\Impl\Messenger\TriggerEvent;
 use Fusio\Impl\Service\System\FrameworkConfig;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -43,8 +44,16 @@ class Dispatcher implements DispatcherInterface
         $this->frameworkConfig = $frameworkConfig;
     }
 
-    public function dispatch(string $eventName, mixed $payload): void
+    /**
+     * @throws ExceptionInterface
+     */
+    public function dispatch(string $eventName, mixed $payload, array $headers = []): void
     {
-        $this->messageBus->dispatch(new TriggerEvent($this->frameworkConfig->getTenantId(), $eventName, $payload));
+        $this->messageBus->dispatch(
+            new TriggerEvent($this->frameworkConfig->getTenantId(), $eventName, $payload),
+            [
+                new HttpHeaderStamp($headers)
+            ]
+        );
     }
 }
