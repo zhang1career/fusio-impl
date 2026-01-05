@@ -18,4 +18,11 @@ final class HttpHeaderStamp implements StampInterface
     {
         return $this->headers;
     }
+
+    public function withHeader(string $name, string $value): self
+    {
+        $new = clone $this;
+        $new->headers[$name] = $value;
+        return $new;
+    }
 }

@@ -73,7 +73,8 @@ class WebhookSendHandler
             // forward HttpHeaderStamp from the TriggerEvent envelope to the SendHttpRequest dispatch
             $headerStamp = $envelope->last(HttpHeaderStamp::class);
             if ($headerStamp instanceof HttpHeaderStamp) {
-                $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()), [ $headerStamp ]);
+                $newHeaderStamp = $headerStamp->withHeader('X-Event-Code', $event->getEventName());
+                $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()), [ $newHeaderStamp ]);
             } else {
                 $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()));
             }
