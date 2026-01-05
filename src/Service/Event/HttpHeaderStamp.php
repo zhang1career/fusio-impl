@@ -9,7 +9,7 @@ final class HttpHeaderStamp implements StampInterface
 {
     private array $headers;
 
-    public function __construct(array $headers)
+    public function __construct(array $headers = [])
     {
         $this->headers = $headers;
     }
