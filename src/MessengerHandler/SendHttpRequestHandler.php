@@ -53,7 +53,7 @@ class SendHttpRequestHandler
         $this->httpClient = $httpClient;
     }
 
-    public function __invoke(SendHttpRequest $httpRequest, Envelope $envelope): void
+    public function __invoke(SendHttpRequest $httpRequest, ?Envelope $envelope): void
     {
         $existing = $this->responseTable->find($httpRequest->getResponseId());
         if (!$existing instanceof Table\Generated\WebhookResponseRow) {
@@ -70,7 +70,7 @@ class SendHttpRequestHandler
         ];
 
         // merge headers from HttpHeaderStamp if present
-        $headerStamp = $envelope->last(HttpHeaderStamp::class);
+        $headerStamp = $envelope?->last(HttpHeaderStamp::class);
         if ($headerStamp instanceof HttpHeaderStamp) {
             $headers = array_merge($headers, $headerStamp->getHeaders());
         }

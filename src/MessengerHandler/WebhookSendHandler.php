@@ -53,7 +53,7 @@ class WebhookSendHandler
         $this->messageBus = $messageBus;
     }
 
-    public function __invoke(TriggerEvent $event, Envelope $envelope): void
+    public function __invoke(TriggerEvent $event, ?Envelope $envelope): void
     {
         $existing = $this->eventTable->findOneByTenantAndName($event->getTenantId(), null, $event->getEventName());
         if (!$existing instanceof Table\Generated\EventRow) {
@@ -72,7 +72,7 @@ class WebhookSendHandler
             $responseId = $this->responseTable->getLastInsertId();
 
             // forward HttpHeaderStamp from the TriggerEvent envelope to the SendHttpRequest dispatch
-            $headerStamp = $envelope->last(HttpHeaderStamp::class);
+            $headerStamp = $envelope?->last(HttpHeaderStamp::class);
             if ($headerStamp instanceof HttpHeaderStamp) {
                 $newHeaderStamp = $headerStamp->withHeader(HttpRequestContext::X_EVENT_CODE, $event->getEventName());
                 $this->messageBus->dispatch(new SendHttpRequest($responseId, $webhook['endpoint'], $event->getPayload()), [ $newHeaderStamp ]);
