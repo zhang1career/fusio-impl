@@ -53,7 +53,7 @@ class SendHttpRequestHandler
         $this->httpClient = $httpClient;
     }
 
-    public function __invoke(SendHttpRequest $httpRequest, ?Envelope $envelope): void
+    public function __invoke(SendHttpRequest $httpRequest, ?Envelope $envelope = null): void
     {
         $existing = $this->responseTable->find($httpRequest->getResponseId());
         if (!$existing instanceof Table\Generated\WebhookResponseRow) {
