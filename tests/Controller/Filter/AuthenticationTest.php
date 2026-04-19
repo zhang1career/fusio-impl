@@ -27,6 +27,7 @@ use Fusio\Impl\Framework\Loader\Context;
 use Fusio\Impl\Framework\Loader\ContextFactory;
 use Fusio\Impl\Repository\AppDatabase;
 use Fusio\Impl\Service\Security\TokenValidator;
+use Fusio\Impl\Service\Security\UserCenterBearerValidator;
 use Fusio\Impl\Service\System\FrameworkConfig;
 use Fusio\Impl\Table\Operation;
 use Fusio\Impl\Tests\DbTestCase;
@@ -65,8 +66,9 @@ class AuthenticationTest extends DbTestCase
             ->with($this->equalTo($request), $this->equalTo($response));
 
         $tokenValidator = Environment::getService(TokenValidator::class);
+        $userCenter = Environment::getService(UserCenterBearerValidator::class);
 
-        $authentication = new Authentication($tokenValidator, $contextFactory);
+        $authentication = new Authentication($tokenValidator, $userCenter, $contextFactory);
         $authentication->handle($request, $response, $filterChain);
 
         $app = $contextFactory->getActive()->getApp();
@@ -98,8 +100,9 @@ class AuthenticationTest extends DbTestCase
             ->with($this->equalTo($request), $this->equalTo($response));
 
         $tokenValidator = Environment::getService(TokenValidator::class);
+        $userCenter = Environment::getService(UserCenterBearerValidator::class);
 
-        $authentication = new Authentication($tokenValidator, $contextFactory);
+        $authentication = new Authentication($tokenValidator, $userCenter, $contextFactory);
         $authentication->handle($request, $response, $filterChain);
     }
 
@@ -122,8 +125,9 @@ class AuthenticationTest extends DbTestCase
             ->with($this->equalTo($request), $this->equalTo($response));
 
         $tokenValidator = Environment::getService(TokenValidator::class);
+        $userCenter = Environment::getService(UserCenterBearerValidator::class);
 
-        $authentication = new Authentication($tokenValidator, $contextFactory);
+        $authentication = new Authentication($tokenValidator, $userCenter, $contextFactory);
         $authentication->handle($request, $response, $filterChain);
     }
 
@@ -146,8 +150,9 @@ class AuthenticationTest extends DbTestCase
             ->with($this->equalTo($request), $this->equalTo($response));
 
         $tokenValidator = Environment::getService(TokenValidator::class);
+        $userCenter = Environment::getService(UserCenterBearerValidator::class);
 
-        $authentication = new Authentication($tokenValidator, $contextFactory);
+        $authentication = new Authentication($tokenValidator, $userCenter, $contextFactory);
         $authentication->handle($request, $response, $filterChain);
     }
 
@@ -170,8 +175,9 @@ class AuthenticationTest extends DbTestCase
             ->with($this->equalTo($request), $this->equalTo($response));
 
         $tokenValidator = Environment::getService(TokenValidator::class);
+        $userCenter = Environment::getService(UserCenterBearerValidator::class);
 
-        $authentication = new Authentication($tokenValidator, $contextFactory);
+        $authentication = new Authentication($tokenValidator, $userCenter, $contextFactory);
         $authentication->handle($request, $response, $filterChain);
     }
 
@@ -180,6 +186,7 @@ class AuthenticationTest extends DbTestCase
         $id = Fixture::getReference('fusio_operation', 'test.listFoo')->resolve($this->connection);
         $row = Environment::getService(TableManagerInterface::class)->getTable(Operation::class)->find($id);
         $row->setPublic(0);
+        $row->setUsability(Operation::USABILITY_INTERNAL);
         $context->setOperation($row);
 
         $app = (new AppDatabase($this->connection, Environment::getService(FrameworkConfig::class)))->get(1);

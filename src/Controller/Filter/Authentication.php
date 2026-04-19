@@ -22,6 +22,8 @@ namespace Fusio\Impl\Controller\Filter;
 
 use Fusio\Impl\Framework\Loader\ContextFactory;
 use Fusio\Impl\Service\Security\TokenValidator;
+use Fusio\Impl\Service\Security\UserCenterBearerValidator;
+use Fusio\Impl\Table;
 use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterInterface;
@@ -37,20 +39,35 @@ use PSX\Http\ResponseInterface;
  */
 class Authentication implements FilterInterface
 {
-    private TokenValidator $tokenValidator;
-    private ContextFactory $contextFactory;
-
-    public function __construct(TokenValidator $tokenValidator, ContextFactory $contextFactory)
-    {
-        $this->tokenValidator = $tokenValidator;
-        $this->contextFactory = $contextFactory;
+    public function __construct(
+        private TokenValidator $tokenValidator,
+        private UserCenterBearerValidator $userCenterBearerValidator,
+        private ContextFactory $contextFactory,
+    ) {
     }
 
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
+        $context = $this->contextFactory->getActive();
+        $operation = $context->getOperation();
+
+        if ($operation->getPublic() === 1) {
+            $this->tokenValidator->assertAuthorization($request->getHeader('Authorization'), $context);
+            $filterChain->handle($request, $response);
+
+            return;
+        }
+
+        if ($operation->getUsability() === Table\Operation::USABILITY_EXTERNAL) {
+            $this->userCenterBearerValidator->assertAndDecorateRequest($request, $context);
+            $filterChain->handle($request, $response);
+
+            return;
+        }
+
         $success = $this->tokenValidator->assertAuthorization(
             $request->getHeader('Authorization'),
-            $this->contextFactory->getActive()
+            $context
         );
 
         if ($success) {

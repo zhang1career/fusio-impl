@@ -66,7 +66,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "Fusio\\Impl\\": "src/"
+      "Fusio\\Impl\\": "src/",
+      "Fusio\\Model\\Backend\\": "src/Model/Backend/"
     }
   },
   "autoload-dev": {

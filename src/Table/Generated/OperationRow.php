@@ -10,6 +10,7 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
     private ?int $status = null;
     private ?int $active = null;
     private ?int $public = null;
+    private ?int $usability = null;
     private ?int $stability = null;
     private ?string $description = null;
     private ?string $httpMethod = null;
@@ -70,6 +71,14 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
     public function getPublic() : int
     {
         return $this->public ?? throw new \PSX\Sql\Exception\NoValueAvailable('No value for required column "public" was provided');
+    }
+    public function setUsability(int $usability) : void
+    {
+        $this->usability = $usability;
+    }
+    public function getUsability() : int
+    {
+        return $this->usability ?? \Fusio\Impl\Table\Operation::USABILITY_INTERNAL;
     }
     public function setStability(int $stability) : void
     {
@@ -185,6 +194,7 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('status', $this->status);
         $record->put('active', $this->active);
         $record->put('public', $this->public);
+        $record->put('usability', $this->getUsability());
         $record->put('stability', $this->stability);
         $record->put('description', $this->description);
         $record->put('http_method', $this->httpMethod);
@@ -213,7 +223,8 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
         $row->status = isset($data['status']) && is_int($data['status']) ? $data['status'] : null;
         $row->active = isset($data['active']) && is_int($data['active']) ? $data['active'] : null;
         $row->public = isset($data['public']) && is_int($data['public']) ? $data['public'] : null;
-        $row->stability = isset($data['stability']) && is_int($data['stability']) ? $data['stability'] : null;
+        $row->usability = isset($data['usability']) && is_numeric($data['usability']) ? (int) $data['usability'] : null;
+        $row->stability = isset($data['stability']) && is_numeric($data['stability']) ? (int) $data['stability'] : null;
         $row->description = isset($data['description']) && is_string($data['description']) ? $data['description'] : null;
         $row->httpMethod = isset($data['http_method']) && is_string($data['http_method']) ? $data['http_method'] : null;
         $row->httpPath = isset($data['http_path']) && is_string($data['http_path']) ? $data['http_path'] : null;

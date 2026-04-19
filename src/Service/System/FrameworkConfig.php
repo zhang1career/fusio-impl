@@ -97,6 +97,32 @@ class FrameworkConfig
         return !!$this->config->get('fusio_marketplace');
     }
 
+    /**
+     * Base URL for external (user center) JWT validation; empty string means not configured.
+     */
+    public function getUserCenterBaseUrl(): string
+    {
+        $url = $this->config->get('ext_user_center_url');
+        if (!is_string($url) || $url === '') {
+            return '';
+        }
+
+        return rtrim($url, '/');
+    }
+
+    /**
+     * Path for GET current-user call (Bearer token), starting with /.
+     */
+    public function getUserCenterMePath(): string
+    {
+        $path = $this->config->get('ext_user_center_me_path');
+        if (!is_string($path) || $path === '') {
+            return '/api/user/me';
+        }
+
+        return str_starts_with($path, '/') ? $path : '/' . $path;
+    }
+
     public function getAppsUrl(): string
     {
         return $this->config->get('fusio_apps_url');

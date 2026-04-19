@@ -77,6 +77,7 @@ class Operation
             $row->setStatus(Table\Operation::STATUS_ACTIVE);
             $row->setActive($operation->getActive() !== null ? (int) $operation->getActive() : 1);
             $row->setPublic($operation->getPublic() !== null ? (int) $operation->getPublic() : 0);
+            $row->setUsability($operation->getUsability() ?? Table\Operation::USABILITY_INTERNAL);
             $row->setStability($operation->getStability());
             $row->setDescription($operation->getDescription());
             $row->setHttpMethod($operation->getHttpMethod());
@@ -142,6 +143,9 @@ class Operation
             } else {
                 $existing->setActive($operation->getActive() !== null ? (int) $operation->getActive() : $existing->getActive());
                 $existing->setPublic($operation->getPublic() !== null ? (int) $operation->getPublic() : $existing->getPublic());
+                if ($operation->getUsability() !== null) {
+                    $existing->setUsability($operation->getUsability());
+                }
                 $existing->setStability($operation->getStability() ?? $existing->getStability());
                 $existing->setDescription($operation->getDescription() ?? $existing->getDescription());
                 $existing->setHttpMethod($operation->getHttpMethod() ?? $existing->getHttpMethod());

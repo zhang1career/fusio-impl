@@ -37,6 +37,12 @@ class Operation extends Generated\OperationTable
     public const STATUS_ACTIVE  = 1;
     public const STATUS_DELETED = 0;
 
+    /** Fusio OAuth2 access token and scope checks */
+    public const USABILITY_INTERNAL = 0;
+
+    /** User center JWT validated via HTTP (see ext_user_center_url) */
+    public const USABILITY_EXTERNAL = 1;
+
     public function findOneByIdentifier(?string $tenantId, int $categoryId, string $id): ?OperationRow
     {
         if (str_starts_with($id, '~')) {
