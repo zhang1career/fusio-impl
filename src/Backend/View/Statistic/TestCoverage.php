@@ -62,7 +62,12 @@ class TestCoverage extends ViewAbstract
 
         return [
             'labels' => $labels,
-            'data' => [$data],
+            'series' => [
+                [
+                    'name' => 'Tests',
+                    'data' => $data,
+                ],
+            ],
         ];
     }
 }

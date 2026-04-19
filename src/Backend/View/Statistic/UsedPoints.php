@@ -75,8 +75,12 @@ class UsedPoints extends ViewAbstract
 
         return [
             'labels' => $labels,
-            'data'   => [array_values($data)],
-            'series' => ['Points'],
+            'series' => [
+                [
+                    'name' => 'Points',
+                    'data' => array_values($data),
+                ],
+            ],
         ];
     }
 }

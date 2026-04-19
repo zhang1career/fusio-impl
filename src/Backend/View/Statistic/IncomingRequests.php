@@ -73,8 +73,12 @@ class IncomingRequests extends ViewAbstract
 
         return [
             'labels' => $labels,
-            'data'   => [array_values($data)],
-            'series' => ['Requests'],
+            'series' => [
+                [
+                    'name' => 'Requests',
+                    'data' => array_values($data),
+                ],
+            ],
         ];
     }
 }

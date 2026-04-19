@@ -48,13 +48,16 @@ class TestCoverageTest extends DbTestCase
         "Warning",
         "Error"
     ],
-    "data": [
-        [
-            1,
-            0,
-            0,
-            0
-        ]
+    "series": [
+        {
+            "name": "Tests",
+            "data": [
+                1,
+                0,
+                0,
+                0
+            ]
+        }
     ]
 }
 JSON;
