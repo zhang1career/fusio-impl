@@ -102,7 +102,7 @@ class FrameworkConfig
      */
     public function getUserCenterBaseUrl(): string
     {
-        $url = $this->config->get('ext_user_center_url');
+        $url = $this->config->get('fusio_user_center_url');
         if (!is_string($url) || $url === '') {
             return '';
         }
@@ -115,7 +115,7 @@ class FrameworkConfig
      */
     public function getUserCenterMePath(): string
     {
-        $path = $this->config->get('ext_user_center_me_path');
+        $path = $this->config->get('fusio_user_center_me_path');
         if (!is_string($path) || $path === '') {
             return '/api/user/me';
         }
