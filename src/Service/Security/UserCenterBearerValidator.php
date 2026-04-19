@@ -31,7 +31,7 @@ final class UserCenterBearerValidator
     {
         $baseUrl = $this->frameworkConfig->getUserCenterBaseUrl();
         if ($baseUrl === '') {
-            throw new ServiceUnavailableException('User center is not configured (fusio_user_center_url / FUSIO_USER_CENTER_URL)');
+            throw new ServiceUnavailableException('User center is not configured (ext_user_center_url / EXT_USER_CENTER_URL)');
         }
 
         $authorization = $request->getHeader('Authorization');

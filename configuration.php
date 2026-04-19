@@ -39,10 +39,10 @@ return [
     'fusio_marketplace'        => false,
 
     // Base URL of the user center (no trailing slash), used when an operation has usability=1 (external)
-    'fusio_user_center_url'    => env('FUSIO_USER_CENTER_URL')->default('')->string(),
+    'ext_user_center_url'    => env('EXT_USER_CENTER_URL')->default('')->string(),
 
     // GET path for Bearer token validation; empty uses /api/user/me (see FrameworkConfig::getUserCenterMePath)
-    'fusio_user_center_me_path'=> env('FUSIO_USER_CENTER_ME_PATH')->default('')->string(),
+    'ext_user_center_me_path'=> env('EXT_USER_CENTER_ME_PATH')->default('/api/user/me')->string(),
 
     // The public url to the apps folder (i.e. http://acme.com/apps or http://apps.acme.com)
     'fusio_apps_url'           => env('APP_APPS_URL')->string(),

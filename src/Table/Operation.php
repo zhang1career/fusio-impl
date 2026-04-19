@@ -40,7 +40,7 @@ class Operation extends Generated\OperationTable
     /** Fusio OAuth2 access token and scope checks */
     public const USABILITY_INTERNAL = 0;
 
-    /** User center JWT validated via HTTP (see fusio_user_center_url) */
+    /** User center JWT validated via HTTP (see ext_user_center_url) */
     public const USABILITY_EXTERNAL = 1;
 
     public function findOneByIdentifier(?string $tenantId, int $categoryId, string $id): ?OperationRow
