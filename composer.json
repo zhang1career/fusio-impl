@@ -53,6 +53,10 @@
   "repositories": [
     {
       "type": "vcs",
+      "url": "git@github.com:zhang1career/psx-framework.git"
+    },
+    {
+      "type": "vcs",
       "url": "https://github.com/zhang1career/fusio-adapter-http"
     },
     {
