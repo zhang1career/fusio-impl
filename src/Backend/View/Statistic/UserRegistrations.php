@@ -72,8 +72,12 @@ class UserRegistrations extends ViewAbstract
 
         return [
             'labels' => $labels,
-            'data'   => [array_values($data)],
-            'series' => ['Users'],
+            'series' => [
+                [
+                    'name' => 'Users',
+                    'data' => array_values($data),
+                ],
+            ],
         ];
     }
 }

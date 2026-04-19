@@ -73,8 +73,12 @@ class IssuedTokens extends ViewAbstract
 
         return [
             'labels' => $labels,
-            'data'   => [array_values($data)],
-            'series' => ['Tokens'],
+            'series' => [
+                [
+                    'name' => 'Tokens',
+                    'data' => array_values($data),
+                ],
+            ],
         ];
     }
 }

@@ -72,8 +72,12 @@ class IncomingTransactions extends ViewAbstract
 
         return [
             'labels' => $labels,
-            'data'   => [array_values($data)],
-            'series' => ['Amount'],
+            'series' => [
+                [
+                    'name' => 'Amount',
+                    'data' => array_values($data),
+                ],
+            ],
         ];
     }
 }

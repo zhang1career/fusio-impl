@@ -73,8 +73,12 @@ class TimeAverage extends ViewAbstract
 
         return [
             'labels' => $labels,
-            'data'   => [array_values($data)],
-            'series' => ['Execution time (ms)'],
+            'series' => [
+                [
+                    'name' => 'Execution time (ms)',
+                    'data' => array_values($data),
+                ],
+            ],
         ];
     }
 }

@@ -107,16 +107,24 @@ class ActivitiesPerUser extends ViewAbstract
             $fromDate = $fromDate->add(new \DateInterval('P1D'));
         }
 
-        // clean data structure
+        // clean data structure — series must be [{name, data}] for fusio-sdk / Backend SPA charts
         $values = [];
         foreach ($data as $row) {
             $values[] = array_values($row);
         }
 
+        $seriesNames = array_values($series);
+        $seriesOut   = [];
+        foreach ($values as $i => $rowValues) {
+            $seriesOut[] = [
+                'name' => $seriesNames[$i] ?? '',
+                'data' => $rowValues,
+            ];
+        }
+
         return [
             'labels' => $labels,
-            'data'   => $values,
-            'series' => array_values($series),
+            'series' => $seriesOut,
         ];
     }
 }
