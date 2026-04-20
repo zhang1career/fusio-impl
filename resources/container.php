@@ -8,6 +8,7 @@ use Fusio\Engine\DispatcherInterface;
 use Fusio\Engine\Repository;
 use Fusio\Impl\Cli\Config;
 use Fusio\Impl\Cli\Transport;
+use Fusio\Impl\Controller\Filter\Authentication;
 use Fusio\Impl\Framework;
 use Fusio\Impl\Mail\SenderInterface as MailSenderInterface;
 use Fusio\Impl\Provider;
@@ -16,6 +17,8 @@ use Fusio\Impl\Infrastructure\ServiceDiscovery\RedisStringClientFactory;
 use Fusio\Impl\Infrastructure\ServiceDiscovery\UserCenterServiceDiscoveryFactories;
 use Fusio\Impl\Service\Action\Producer;
 use Fusio\Impl\Service\Event\Dispatcher;
+use Fusio\Impl\Service\Security\TokenValidator;
+use Fusio\Impl\Service\Security\UserCenterBearerValidator;
 use Fusio\Impl\Service\System\ResolvedUserCenterBaseUrl;
 use Fusio\Impl\Service\Tenant\LimiterInterface;
 use Fusio\Impl\Tenant\UnlimitedLimiter;
@@ -82,6 +85,13 @@ return static function (ContainerConfigurator $container) {
         ->public();
     $services->load('Fusio\\Impl\\Controller\\', __DIR__ . '/../src/Controller')
         ->public();
+    // Explicit args: avoids stale compiled container / autowiring passing ContextFactory as arg 2
+    $services->get(Authentication::class)
+        ->args([
+            service(TokenValidator::class),
+            service(UserCenterBearerValidator::class),
+            service(Framework\Loader\ContextFactory::class),
+        ]);
     $services->load('Fusio\\Impl\\Table\\', __DIR__ . '/../src/Table')
         ->exclude('Generated')
         ->public();
