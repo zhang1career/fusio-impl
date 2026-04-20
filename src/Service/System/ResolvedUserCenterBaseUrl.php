@@ -44,10 +44,10 @@ final class ResolvedUserCenterBaseUrl
             return rtrim($raw, '/');
         }
 
-        $dsn = trim((string)$this->config->get('ext_user_center_sd_redis_dsn'));
-        if ($dsn === '') {
+        $host = trim((string)$this->config->get('redis_host'));
+        if ($host === '') {
             throw new InvalidConfigurationException(
-                'ext_user_center_url contains service-discovery placeholders (`://{{...}}`) but ext_user_center_sd_redis_dsn (EXT_USER_CENTER_SD_REDIS_DSN) is not set.'
+                'ext_user_center_url contains service-discovery placeholders (`://{{...}}`) but REDIS_HOST (redis_host) is not set.'
             );
         }
 

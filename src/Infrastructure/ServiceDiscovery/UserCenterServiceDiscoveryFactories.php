@@ -31,7 +31,7 @@ final class UserCenterServiceDiscoveryFactories
     ): RedisServiceUriResolver {
         return new RedisServiceUriResolver(
             $redisFactory($config),
-            (string) $config->get('ext_user_center_sd_key_prefix')
+            (string) $config->get('redis_prefix_register_service')
         );
     }
 }

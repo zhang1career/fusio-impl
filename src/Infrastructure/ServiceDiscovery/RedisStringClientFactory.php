@@ -12,11 +12,25 @@ final class RedisStringClientFactory
 {
     public function __invoke(ConfigInterface $config): RedisStringClient
     {
-        $dsn = trim((string) $config->get('ext_user_center_sd_redis_dsn'));
-        if ($dsn === '') {
+        $host = trim((string) $config->get('redis_host'));
+        if ($host === '') {
             return new NullRedisStringClient();
         }
 
-        return new PredisRedisStringClient(new Client($dsn));
+        $scheme = trim((string) $config->get('redis_scheme'));
+        if ($scheme === '') {
+            $scheme = 'tcp';
+        }
+
+        $port = (int) $config->get('redis_port');
+        if ($port <= 0) {
+            $port = 6379;
+        }
+
+        return new PredisRedisStringClient(new Client([
+            'scheme' => $scheme,
+            'host'   => $host,
+            'port'   => $port,
+        ]));
     }
 }

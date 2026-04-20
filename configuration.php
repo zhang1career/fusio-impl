@@ -40,9 +40,13 @@ return [
 
     // Base URL of the user center (no trailing slash), used when an operation has usability=1 (external)
     'ext_user_center_url'      => env('EXT_USER_CENTER_URL')->default('')->string(),
+    // Shared Redis connection used by paganini service discovery (empty REDIS_HOST disables discovery).
+    'redis_scheme'             => env('REDIS_SCHEME')->default('tcp')->string(),
+    'redis_host'               => env('REDIS_HOST')->default('')->string(),
+    'redis_port'               => env('REDIS_PORT')->default(6379)->int(),
+    // Key prefix (namespace) for service registration entries in Redis, e.g. `reg:serv:`.
+    'redis_prefix_register_service'       => env('REDIS_PREFIX_REGISTER_SERVICE')->default('')->string(),
     // When ext_user_center_url contains `://{{service_key}}` (Fusio / mall-agg style, e.g. `http://{{serv-fd}}/api`), resolve host via Redis (paganini). Plain URLs skip Redis.
-    'ext_user_center_sd_redis_dsn'        => env('EXT_USER_CENTER_SD_REDIS_DSN')->default('')->string(),
-    'ext_user_center_sd_key_prefix'       => env('EXT_USER_CENTER_SD_KEY_PREFIX')->default('')->string(),
     'ext_user_center_sd_memo_ttl_seconds' => env('EXT_USER_CENTER_SD_MEMO_TTL')->default(60)->int(),
     // GET path for Bearer token validation; empty uses /api/user/me (see FrameworkConfig::getUserCenterMePath)
     'ext_user_center_me_path'  => env('EXT_USER_CENTER_ME_PATH')->default('')->string(),

@@ -21,7 +21,7 @@ class ResolvedUserCenterBaseUrlTest extends TestCase
     {
         $config = new Config([
             'ext_user_center_url' => 'https://user.example.com',
-            'ext_user_center_sd_redis_dsn' => '',
+            'redis_host' => '',
             'ext_user_center_sd_memo_ttl_seconds' => 60,
         ]);
         $resolver = $this->createMock(ServiceUriResolverInterface::class);
@@ -36,7 +36,7 @@ class ResolvedUserCenterBaseUrlTest extends TestCase
     {
         $config = new Config([
             'ext_user_center_url' => 'https://user.example.com/',
-            'ext_user_center_sd_redis_dsn' => '',
+            'redis_host' => '',
             'ext_user_center_sd_memo_ttl_seconds' => 60,
         ]);
         $resolver = $this->createMock(ServiceUriResolverInterface::class);
@@ -50,7 +50,7 @@ class ResolvedUserCenterBaseUrlTest extends TestCase
     {
         $config = new Config([
             'ext_user_center_url' => 'http://{{serv-fd}}/api/v1',
-            'ext_user_center_sd_redis_dsn' => 'tcp://127.0.0.1:6379',
+            'redis_host' => '127.0.0.1',
             'ext_user_center_sd_memo_ttl_seconds' => 60,
         ]);
         $resolver = $this->createMock(ServiceUriResolverInterface::class);
@@ -61,11 +61,11 @@ class ResolvedUserCenterBaseUrlTest extends TestCase
         $this->assertSame('http://serv-fd.internal:8000/api/v1', $sut->resolve());
     }
 
-    public function testResolveThrowsWhenPlaceholderButNoRedisDsn(): void
+    public function testResolveThrowsWhenPlaceholderButNoRedisHost(): void
     {
         $config = new Config([
             'ext_user_center_url' => 'http://{{serv-fd}}/api',
-            'ext_user_center_sd_redis_dsn' => '',
+            'redis_host' => '',
             'ext_user_center_sd_memo_ttl_seconds' => 60,
         ]);
         $resolver = $this->createMock(ServiceUriResolverInterface::class);
@@ -80,7 +80,7 @@ class ResolvedUserCenterBaseUrlTest extends TestCase
     {
         $config = new Config([
             'ext_user_center_url' => '',
-            'ext_user_center_sd_redis_dsn' => '',
+            'redis_host' => '',
             'ext_user_center_sd_memo_ttl_seconds' => 60,
         ]);
         $resolver = $this->createMock(ServiceUriResolverInterface::class);
