@@ -48,7 +48,7 @@ return [
     'redis_prefix_register_service'       => env('REDIS_PREFIX_REGISTER_SERVICE')->default('')->string(),
     // When ext_user_center_url contains `://{{service_key}}` (Fusio / mall-agg style, e.g. `http://{{serv-fd}}/api`), resolve host via Redis (paganini). Plain URLs skip Redis.
     'ext_user_center_sd_memo_ttl_seconds' => env('EXT_USER_CENTER_SD_MEMO_TTL')->default(60)->int(),
-    // GET path for Bearer token validation; empty uses /api/user/me (see FrameworkConfig::getUserCenterMePath)
+    // GET path for Bearer token validation; empty uses /api/user/me/validate (see FrameworkConfig::getUserCenterMePath)
     'ext_user_center_me_path'  => env('EXT_USER_CENTER_ME_PATH')->default('')->string(),
 
     // The public url to the apps folder (i.e. http://acme.com/apps or http://apps.acme.com)

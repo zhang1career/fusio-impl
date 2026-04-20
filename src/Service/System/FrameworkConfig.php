@@ -127,16 +127,17 @@ class FrameworkConfig
     }
 
     /**
-     * Path for GET current-user call (Bearer token), starting with /.
+     * Path for GET Bearer token validation against the user center, starting with /.
+     * Default is the lightweight JWT validate endpoint (see app_user GET /me/validate).
      *
-     * Note: the default cannot live in configuration.php via env()->default('/api/user/me')
+     * Note: the default cannot live in configuration.php via env()->default('/api/user/me/validate')
      * because Symfony DI forbids `/` in env processor chain names; fallback is applied here.
      */
     public function getUserCenterMePath(): string
     {
         $path = $this->config->get('ext_user_center_me_path');
         if (!is_string($path) || $path === '') {
-            return '/api/user/me';
+            return '/api/user/me/validate';
         }
         return str_starts_with($path, '/') ? $path : '/' . $path;
     }

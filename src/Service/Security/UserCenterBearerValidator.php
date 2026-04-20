@@ -14,7 +14,7 @@ use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\RequestInterface;
 
 /**
- * Validates Authorization: Bearer JWT against the configured user center (GET profile endpoint).
+ * Validates Authorization: Bearer JWT against the configured user center (GET validate or profile path).
  */
 final class UserCenterBearerValidator
 {
@@ -65,7 +65,13 @@ final class UserCenterBearerValidator
         }
 
         $user = $payload['data'] ?? null;
-        if (!is_array($user) || !isset($user['id'])) {
+        if (!is_array($user)) {
+            throw new UnauthorizedException('Invalid user center user payload', 'Bearer', $params);
+        }
+
+        // GET /me/validate returns JwtValidateResult (user_id); GET /me returns full User (id)
+        $userId = $user['user_id'] ?? $user['id'] ?? null;
+        if ($userId === null || (!is_int($userId) && !is_string($userId))) {
             throw new UnauthorizedException('Invalid user center user payload', 'Bearer', $params);
         }
 
@@ -73,7 +79,7 @@ final class UserCenterBearerValidator
             $request->removeHeader($headerName);
         }
 
-        $request->setHeader('X-User-Id', (string) $user['id']);
+        $request->setHeader('X-User-Id', (string) $userId);
         if (isset($user['username']) && is_string($user['username']) && $user['username'] !== '') {
             $request->setHeader('X-User-Name', $user['username']);
         }
