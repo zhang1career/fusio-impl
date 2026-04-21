@@ -58,7 +58,14 @@ class Invoker
         }
 
         $baseUrl = $this->frameworkConfig->getDispatchUrl();
-        $context = new EngineContext($operation->getId(), $baseUrl, $context->getApp(), $context->getUser(), $this->frameworkConfig->getTenantId());
+        $context = new EngineContext(
+            $operation->getId(),
+            $baseUrl,
+            $context->getApp(),
+            $context->getUser(),
+            $this->frameworkConfig->getTenantId(),
+            $operation->getUsability()
+        );
 
         if ($costs > 0) {
             // as anonymous user it is not possible to pay
