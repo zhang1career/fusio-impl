@@ -7,6 +7,8 @@ namespace Fusio\Impl\Service\Security;
 use Fusio\Engine\Model\AppAnonymous;
 use Fusio\Engine\Model\TokenAnonymous;
 use Fusio\Engine\Model\UserAnonymous;
+use Fusio\Engine\Request\BearerAccessToken;
+use Fusio\Engine\Request\HttpRequestHeaderConstant;
 use Fusio\Impl\Framework\Loader\Context;
 use Fusio\Impl\Service\System\FrameworkConfig;
 use PSX\Http\Exception\ServiceUnavailableException;
@@ -14,7 +16,8 @@ use PSX\Http\Exception\UnauthorizedException;
 use PSX\Http\RequestInterface;
 
 /**
- * Validates Authorization: Bearer JWT against the configured user center (GET validate or profile path).
+ * Validates upstream Authorization Bearer JWT against the configured user center (GET validate or profile path).
+ * Calls user center with X-User-Access-Token (raw JWT); then clears Authorization and sets the same header for downstream.
  */
 final class UserCenterBearerValidator
 {
@@ -35,16 +38,14 @@ final class UserCenterBearerValidator
         }
 
         $authorization = $request->getHeader('Authorization');
-        $parts = explode(' ', $authorization ?? '', 2);
-        $type = $parts[0] ?? '';
-        $accessToken = isset($parts[1]) ? trim($parts[1]) : '';
-
         $params = ['realm' => 'Fusio'];
 
-        if ($type === '') {
+        if ($authorization === null || trim($authorization) === '') {
             throw new UnauthorizedException('Missing authorization header', 'Bearer', $params);
         }
-        if ($type !== 'Bearer') {
+
+        $accessToken = BearerAccessToken::rawFromAuthorizationHeader($authorization);
+        if ($accessToken === null) {
             throw new UnauthorizedException('Invalid authorization type', 'Bearer', $params);
         }
         if ($accessToken === '') {
@@ -75,9 +76,12 @@ final class UserCenterBearerValidator
             throw new UnauthorizedException('Invalid user center user payload', 'Bearer', $params);
         }
 
-        foreach (['X-User-Id', 'X-User-Name', 'X-User-Email'] as $headerName) {
+        foreach (['X-User-Id', 'X-User-Name', 'X-User-Email', HttpRequestHeaderConstant::X_USER_ACCESS_TOKEN] as $headerName) {
             $request->removeHeader($headerName);
         }
+
+        $request->removeHeader('Authorization');
+        $request->setHeader(HttpRequestHeaderConstant::X_USER_ACCESS_TOKEN, $accessToken);
 
         $request->setHeader('X-User-Id', (string) $userId);
         if (isset($user['username']) && is_string($user['username']) && $user['username'] !== '') {
@@ -92,7 +96,7 @@ final class UserCenterBearerValidator
         $context->setToken(new TokenAnonymous());
     }
 
-    private function httpGetJson(string $url, string $bearerToken): string
+    private function httpGetJson(string $url, string $rawAccessToken): string
     {
         if (function_exists('curl_init')) {
             $ch = curl_init($url);
@@ -107,7 +111,7 @@ final class UserCenterBearerValidator
                 CURLOPT_CONNECTTIMEOUT => 5,
                 CURLOPT_TIMEOUT => 10,
                 CURLOPT_HTTPHEADER => [
-                    'Authorization: Bearer ' . $bearerToken,
+                    HttpRequestHeaderConstant::X_USER_ACCESS_TOKEN . ': ' . $rawAccessToken,
                     'Accept: application/json',
                 ],
             ]);
@@ -131,7 +135,7 @@ final class UserCenterBearerValidator
         $ctx = stream_context_create([
             'http' => [
                 'method' => 'GET',
-                'header' => "Authorization: Bearer {$bearerToken}\r\nAccept: application/json\r\n",
+                'header' => HttpRequestHeaderConstant::X_USER_ACCESS_TOKEN . ": {$rawAccessToken}\r\nAccept: application/json\r\n",
                 'timeout' => 10.0,
             ],
         ]);
