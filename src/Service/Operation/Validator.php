@@ -27,6 +27,7 @@ use Fusio\Impl\Action\Scheme as ActionScheme;
 use Fusio\Impl\Framework\Schema\Scheme as SchemaScheme;
 use Fusio\Impl\Service\Tenant\UsageLimiter;
 use Fusio\Impl\Table;
+use Fusio\Impl\Table\Operation as OperationTable;
 use Fusio\Model\Backend\Operation;
 use Fusio\Model\Backend\OperationParameters;
 use Fusio\Model\Backend\OperationThrows;
@@ -80,6 +81,11 @@ class Validator
             if ($existing === null) {
                 throw new StatusCode\BadRequestException('Stability must not be empty');
             }
+        }
+
+        $usability = $operation->getUsability();
+        if ($usability !== null) {
+            $this->assertUsability($usability);
         }
 
         $httpPath = $operation->getHttpPath();
@@ -150,6 +156,14 @@ class Validator
         $allowedStability = [OperationInterface::STABILITY_DEPRECATED, OperationInterface::STABILITY_EXPERIMENTAL, OperationInterface::STABILITY_STABLE, OperationInterface::STABILITY_LEGACY];
         if (!in_array($stability, $allowedStability, true)) {
             throw new StatusCode\BadRequestException('Stability contain an invalid value must be one of: ' . implode(', ', $allowedStability));
+        }
+    }
+
+    private function assertUsability(int $usability): void
+    {
+        $allowed = [OperationTable::USABILITY_INTERNAL, OperationTable::USABILITY_EXTERNAL];
+        if (!in_array($usability, $allowed, true)) {
+            throw new StatusCode\BadRequestException('Usability must be one of: ' . implode(', ', $allowed));
         }
     }
 

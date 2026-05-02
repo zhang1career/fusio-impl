@@ -282,8 +282,7 @@ class User
             throw new StatusCode\BadRequestException('New password does not match the verify password');
         }
 
-        // assert password complexity
-        $this->validator->assertPassword($oldPassword);
+        // assert password complexity (old password is verified via password_verify in the table layer)
         $this->validator->assertPassword($newPassword);
 
         // change password

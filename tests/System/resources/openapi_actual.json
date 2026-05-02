@@ -1,0 +1,662 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Fusio",
+        "version": "1"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1/"
+        }
+    ],
+    "paths": {
+        "/authorization/whoami": {
+            "get": {
+                "tags": [
+                    "authorization"
+                ],
+                "operationId": "authorization.getWhoami",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Backend_User"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common_Message"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "authorization"
+                        ]
+                    }
+                ]
+            },
+            "parameters": []
+        },
+        "/authorization/revoke": {
+            "post": {
+                "tags": [
+                    "authorization"
+                ],
+                "operationId": "authorization.revoke",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common_Message"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common_Message"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Common_Message"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "authorization"
+                        ]
+                    }
+                ]
+            },
+            "parameters": []
+        },
+        "/inspect/{foo}": {
+            "get": {
+                "tags": [
+                    "foo",
+                    "bar"
+                ],
+                "operationId": "inspect.get",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Passthru"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Passthru"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "foo",
+                            "bar"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "bar"
+                ],
+                "operationId": "inspect.put",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Passthru"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Passthru"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "bar"
+                        ]
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "foo",
+                    "bar"
+                ],
+                "operationId": "inspect.post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Passthru"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Passthru"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "foo",
+                            "bar"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "bar"
+                ],
+                "operationId": "inspect.delete",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Passthru"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Passthru"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "bar"
+                        ]
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "bar"
+                ],
+                "operationId": "inspect.patch",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Passthru"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Passthru"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "bar"
+                        ]
+                    }
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "foo",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "/": {
+            "get": {
+                "operationId": "meta.getAbout",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/System_About"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "parameters": []
+        },
+        "/foo": {
+            "get": {
+                "tags": [
+                    "bar"
+                ],
+                "operationId": "test.listFoo",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Collection"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "bar"
+                ],
+                "operationId": "test.createFoo",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Entry"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Passthru"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "app": [
+                            "bar"
+                        ]
+                    }
+                ]
+            },
+            "parameters": []
+        }
+    },
+    "components": {
+        "schemas": {
+            "Backend_App": {
+                "description": "This object represents an app to access the API on-behalf of a user",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the object",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "Status of the object either 1 = active, 2 = pending, 3 = deactivated or 4 = deleted",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Unique name of the object",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "Url where the app is hosted",
+                        "type": "string"
+                    },
+                    "parameters": {
+                        "description": "Optional URL-encoded parameters of the app i.e. foo=bar&bar=foo",
+                        "type": "string"
+                    },
+                    "appKey": {
+                        "description": "The app key also known as client id which is generated on creation",
+                        "type": "string"
+                    },
+                    "appSecret": {
+                        "description": "The app secret also known as client secret which is generated on creation",
+                        "type": "string"
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Common_Metadata"
+                    },
+                    "date": {
+                        "description": "The create date of this object",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "scopes": {
+                        "description": "A list of assigned scopes for this app",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "tokens": {
+                        "description": "A list of tokens which are assigned to this app",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Backend_Token"
+                        }
+                    }
+                }
+            },
+            "Backend_Token": {
+                "description": "This object represents a token, this an access token which was requested by a user",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the object",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "Status of the object either 1 = active or 2 = deleted",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "scopes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "ip": {
+                        "type": "string"
+                    },
+                    "expire": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Backend_User": {
+                "description": "This object represents a user",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the object",
+                        "type": "integer"
+                    },
+                    "roleId": {
+                        "description": "A role which is assigned to the user",
+                        "type": "integer"
+                    },
+                    "planId": {
+                        "description": "A plan which is assigned to the user",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "Status of the object either 1 = active, 2 = disabled or 0 = deleted",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Unique name of the object",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "The email address of the user",
+                        "type": "string"
+                    },
+                    "points": {
+                        "description": "Points assigned to the user",
+                        "type": "integer"
+                    },
+                    "scopes": {
+                        "description": "List of scopes which are assigned to the user",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "apps": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Backend_App"
+                        }
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/Common_Metadata"
+                    },
+                    "date": {
+                        "description": "The insert date",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Collection": {
+                "type": "object",
+                "properties": {
+                    "totalResults": {
+                        "type": "integer"
+                    },
+                    "itemsPerPage": {
+                        "type": "integer"
+                    },
+                    "startIndex": {
+                        "type": "integer"
+                    },
+                    "entry": {
+                        "$ref": "#/components/schemas/Entry"
+                    }
+                }
+            },
+            "Common_Message": {
+                "description": "Common error message",
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Common_Metadata": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "string"
+                }
+            },
+            "Entry": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Passthru": {
+                "description": "No schema information available",
+                "type": "object",
+                "additionalProperties": {}
+            },
+            "System_About": {
+                "type": "object",
+                "properties": {
+                    "apiVersion": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "termsOfService": {
+                        "type": "string"
+                    },
+                    "contactName": {
+                        "type": "string"
+                    },
+                    "contactUrl": {
+                        "type": "string"
+                    },
+                    "contactEmail": {
+                        "type": "string"
+                    },
+                    "licenseName": {
+                        "type": "string"
+                    },
+                    "licenseUrl": {
+                        "type": "string"
+                    },
+                    "paymentCurrency": {
+                        "type": "string"
+                    },
+                    "categories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "scopes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "apps": {
+                        "$ref": "#/components/schemas/System_AboutApps"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/System_AboutLink"
+                        }
+                    }
+                }
+            },
+            "System_AboutApps": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "string"
+                }
+            },
+            "System_AboutLink": {
+                "type": "object",
+                "properties": {
+                    "rel": {
+                        "type": "string"
+                    },
+                    "href": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "app": {
+                "type": "oauth2",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "http://127.0.0.1/authorization/token",
+                        "refreshUrl": "http://127.0.0.1/authorization/token",
+                        "scopes": {
+                            "bar": "Bar access",
+                            "default": "",
+                            "foo": "Foo access",
+                            "plan_scope": "Plan scope access"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
