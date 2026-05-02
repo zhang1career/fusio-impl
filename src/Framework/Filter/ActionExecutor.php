@@ -42,7 +42,7 @@ use PSX\Schema\SchemaManagerInterface;
  */
 class ActionExecutor implements FilterInterface
 {
-    private const INCOMING_RAWTHRU_PHP_CLASS = 'php+class://App.Api.Model.Rawthru';
+    private const INCOMING_RAW_PHP_CLASS = 'php+class://App.Api.Model.Raw';
 
     private ActionController $controller;
     private Context $context;
@@ -69,7 +69,7 @@ class ActionExecutor implements FilterInterface
         if (!empty($incoming) && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
             if ($incoming === 'schema://Passthru' || str_starts_with((string) $incoming, 'mime://')) {
                 $payload = $this->requestReader->getBody($request);
-            } elseif ($incoming === 'schema://Rawthru' || $incoming === self::INCOMING_RAWTHRU_PHP_CLASS) {
+            } elseif ($incoming === 'schema://Raw' || $incoming === self::INCOMING_RAW_PHP_CLASS) {
                 $payload = $this->requestReader->getBody($request, Raw::class);
             } else {
                 $schema  = $this->schemaManager->getSchema($incoming);

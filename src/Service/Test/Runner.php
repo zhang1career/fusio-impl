@@ -210,8 +210,8 @@ class Runner
         return !empty($schema)
             && $schema !== 'schema://Passthru'
             && $schema !== 'php+class://PSX.Api.Model.Passthru'
-            && $schema !== 'schema://Rawthru'
-            && $schema !== 'php+class://App.Api.Model.Rawthru';
+            && $schema !== 'schema://Raw'
+            && $schema !== 'php+class://App.Api.Model.Raw';
     }
 
     private function getErrorMessage(\Throwable $e): string
