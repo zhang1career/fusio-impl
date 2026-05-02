@@ -23,6 +23,7 @@ namespace Fusio\Impl\Framework\Filter;
 use Fusio\Engine\Request;
 use Fusio\Impl\Controller\ActionController;
 use Fusio\Impl\Framework\Loader\Context;
+use PSX\Data\Reader\Raw;
 use PSX\Framework\Http\RequestReader;
 use PSX\Framework\Http\ResponseWriter;
 use PSX\Http\FilterChainInterface;
@@ -41,6 +42,8 @@ use PSX\Schema\SchemaManagerInterface;
  */
 class ActionExecutor implements FilterInterface
 {
+    private const INCOMING_RAWTHRU_PHP_CLASS = 'php+class://App.Api.Model.Rawthru';
+
     private ActionController $controller;
     private Context $context;
     private SchemaManagerInterface $schemaManager;
@@ -64,8 +67,10 @@ class ActionExecutor implements FilterInterface
 
         $incoming = $this->context->getOperation()->getIncoming();
         if (!empty($incoming) && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
-            if ($incoming === 'schema://Passthru') {
+            if ($incoming === 'schema://Passthru' || str_starts_with((string) $incoming, 'mime://')) {
                 $payload = $this->requestReader->getBody($request);
+            } elseif ($incoming === 'schema://Rawthru' || $incoming === self::INCOMING_RAWTHRU_PHP_CLASS) {
+                $payload = $this->requestReader->getBody($request, Raw::class);
             } else {
                 $schema  = $this->schemaManager->getSchema($incoming);
                 $payload = $this->requestReader->getBodyAs($request, $schema);

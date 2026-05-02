@@ -207,7 +207,11 @@ class Runner
 
     private function isValidSchema(?string $schema): bool
     {
-        return !empty($schema) && $schema !== 'schema://Passthru' && $schema !== 'php+class://PSX.Api.Model.Passthru';
+        return !empty($schema)
+            && $schema !== 'schema://Passthru'
+            && $schema !== 'php+class://PSX.Api.Model.Passthru'
+            && $schema !== 'schema://Rawthru'
+            && $schema !== 'php+class://App.Api.Model.Rawthru';
     }
 
     private function getErrorMessage(\Throwable $e): string
