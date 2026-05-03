@@ -101,6 +101,7 @@ class Operation extends ViewAbstract
             'action' => Table\Generated\OperationTable::COLUMN_ACTION,
             'costs' => $builder->fieldInteger(Table\Generated\OperationTable::COLUMN_COSTS),
             'metadata' => $builder->fieldJson(Table\Generated\OperationTable::COLUMN_METADATA),
+            'responseHeaders' => $builder->fieldJson(Table\Generated\OperationTable::COLUMN_RESPONSE_HEADERS),
         ]);
 
         return $builder->build($definition);

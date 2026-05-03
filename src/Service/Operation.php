@@ -91,6 +91,7 @@ class Operation
             $row->setAction(ActionScheme::wrap($operation->getAction()));
             $row->setCosts($operation->getCosts());
             $row->setMetadata($operation->getMetadata() !== null ? json_encode($operation->getMetadata()) : null);
+            $row->setResponseHeaders($operation->getResponseHeaders() !== null ? json_encode($operation->getResponseHeaders()) : null);
             $this->operationTable->create($row);
 
             $operationId = $this->operationTable->getLastInsertId();
@@ -167,6 +168,10 @@ class Operation
                 $metadata = $operation->getMetadata();
                 if ($metadata !== null) {
                     $existing->setMetadata(json_encode($metadata));
+                }
+                $responseHeaders = $operation->getResponseHeaders();
+                if ($responseHeaders !== null) {
+                    $existing->setResponseHeaders(json_encode($responseHeaders));
                 }
             }
 

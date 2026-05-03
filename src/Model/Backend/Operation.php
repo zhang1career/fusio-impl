@@ -55,6 +55,8 @@ class Operation implements \JsonSerializable, \PSX\Record\RecordableInterface
     protected ?array $scopes = null;
     #[Description('Use this parameter to attach key-value data')]
     protected ?\Fusio\Model\Common\Metadata $metadata = null;
+    #[Description('Response headers which override values written downstream; common use case is CORS / Cache-Control')]
+    protected ?\Fusio\Model\Common\ResponseHeaders $responseHeaders = null;
 
     public function setId(?int $id): void
     {
@@ -252,6 +254,16 @@ class Operation implements \JsonSerializable, \PSX\Record\RecordableInterface
         return $this->metadata;
     }
 
+    public function setResponseHeaders(?\Fusio\Model\Common\ResponseHeaders $responseHeaders): void
+    {
+        $this->responseHeaders = $responseHeaders;
+    }
+
+    public function getResponseHeaders(): ?\Fusio\Model\Common\ResponseHeaders
+    {
+        return $this->responseHeaders;
+    }
+
     /**
      * @return \PSX\Record\RecordInterface<mixed>
      */
@@ -278,6 +290,7 @@ class Operation implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('costs', $this->costs);
         $record->put('scopes', $this->scopes);
         $record->put('metadata', $this->metadata);
+        $record->put('responseHeaders', $this->responseHeaders);
 
         return $record;
     }

@@ -24,7 +24,6 @@ use Fusio\Impl\Framework\Loader\ContextFactory;
 use Fusio\Impl\Table;
 use PSX\Api\OperationInterface;
 use PSX\Framework\Util\Uuid;
-use PSX\Http\Exception\InternalServerErrorException;
 use PSX\Http\FilterChainInterface;
 use PSX\Http\FilterInterface;
 use PSX\Http\RequestInterface;
@@ -32,6 +31,11 @@ use PSX\Http\ResponseInterface;
 
 /**
  * Operation
+ *
+ * Reads the active OperationRow from {@see \Fusio\Impl\Framework\Loader\Context} (populated upstream by
+ * {@see OperationLoader}) and writes the framework-level response headers (Allow / X-Operation-Id / X-Stability /
+ * X-Powered-By / X-Request-Id). Owns the OPTIONS short-circuit: returns without invoking the rest of the chain so the
+ * preflight stays cheap. The operation table is still injected to compute the Allow header set for the requested path.
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -50,14 +54,9 @@ class Operation implements FilterInterface
 
     public function handle(RequestInterface $request, ResponseInterface $response, FilterChainInterface $filterChain): void
     {
-        $context     = $this->contextFactory->getActive();
-        $operationId = $context->getSource()[1] ?? null;
-        $methodName  = $request->getMethod();
-
-        $operation = $this->operationTable->find($operationId ?? 0);
-        if (!$operation instanceof Table\Generated\OperationRow) {
-            throw new InternalServerErrorException('Operation not found');
-        }
+        $context    = $this->contextFactory->getActive();
+        $operation  = $context->getOperation();
+        $methodName = $request->getMethod();
 
         if ($methodName === 'OPTIONS') {
             // for OPTIONS requests we only set the available request methods and directly return so the request is very
@@ -73,8 +72,6 @@ class Operation implements FilterInterface
             $response->setHeader('X-Powered-By', 'Fusio');
             return;
         }
-
-        $context->setOperation($operation);
 
         // add request id
         $response->setHeader('X-Request-Id', Uuid::pseudoRandom());

@@ -24,6 +24,7 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
     private ?string $action = null;
     private ?int $costs = null;
     private ?string $metadata = null;
+    private ?string $responseHeaders = null;
     public function setId(int $id) : void
     {
         $this->id = $id;
@@ -184,6 +185,14 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->metadata;
     }
+    public function setResponseHeaders(?string $responseHeaders) : void
+    {
+        $this->responseHeaders = $responseHeaders;
+    }
+    public function getResponseHeaders() : ?string
+    {
+        return $this->responseHeaders;
+    }
     public function toRecord() : \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
@@ -208,6 +217,7 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('action', $this->action);
         $record->put('costs', $this->costs);
         $record->put('metadata', $this->metadata);
+        $record->put('response_headers', $this->responseHeaders);
         return $record;
     }
     public function jsonSerialize() : object
@@ -237,6 +247,7 @@ class OperationRow implements \JsonSerializable, \PSX\Record\RecordableInterface
         $row->action = isset($data['action']) && is_string($data['action']) ? $data['action'] : null;
         $row->costs = isset($data['costs']) && is_int($data['costs']) ? $data['costs'] : null;
         $row->metadata = isset($data['metadata']) && is_string($data['metadata']) ? $data['metadata'] : null;
+        $row->responseHeaders = isset($data['response_headers']) && is_string($data['response_headers']) ? $data['response_headers'] : null;
         return $row;
     }
 }

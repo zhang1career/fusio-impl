@@ -48,6 +48,8 @@ class ActionController extends ControllerAbstract
             ...parent::getPreFilter(),
             UserAgentEnforcer::class,
             Filter\Tenant::class,
+            Filter\OperationLoader::class,
+            Filter\ResponseHeaders::class,
             Filter\Operation::class,
             Filter\Authentication::class,
             Filter\RequestLimit::class,
