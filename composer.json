@@ -20,7 +20,7 @@
     "psx/openssl": "^2.0",
     "psx/cloudevents": "^1.0",
     "fusio/cli": "^4.0",
-    "fusio/model": "^4.0",
+    "fusio/model": "~4.3.8.0",
     "fusio/engine": "^6.6.1",
     "fusio/adapter-amqp": "^6.0",
     "fusio/adapter-beanstalk": "^6.0",
@@ -59,6 +59,10 @@
     {
       "type": "vcs",
       "url": "git@github.com:zhang1career/psx-framework.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/zhang1career/fusio-model"
     },
     {
       "type": "vcs",
